@@ -1,0 +1,13 @@
+package LinkedBlockingQueue;
+
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+
+public class main {
+
+	public static void main(String[] args) {
+		final BlockingQueue<Integer> queue = new LinkedBlockingQueue<>();
+		
+	}
+
+}

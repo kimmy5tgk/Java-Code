@@ -1,0 +1,10 @@
+package LinkedBlockingQueue;
+
+public class main {
+
+	public static void main(String[] args) {
+		final BlockingQueue<Integer> queue = new LinkedBlockingQueue<>();
+		
+	}
+
+}

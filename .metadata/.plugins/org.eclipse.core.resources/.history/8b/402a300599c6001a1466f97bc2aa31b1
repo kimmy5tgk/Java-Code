@@ -1,0 +1,111 @@
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+
+// Autor: %AUTHOR%
+// Datum: %DATE%
+
+public class WartezimmerGUI extends JFrame {
+  /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+// Anfang Attribute
+  private JLabel jLabel1 = new JLabel();
+  private JLabel jLName = new JLabel();
+  private JLabel jLKasse = new JLabel();
+  private JTextField jTFName = new JTextField();
+  private JTextField jTFKasse = new JTextField();
+  private JButton jBAnmelden = new JButton();
+  private JLabel jLNaechste = new JLabel();
+  private JLabel jLNameNaechster = new JLabel();
+  private JButton jBabmelden = new JButton();
+  // Ende Attribute
+  private Wartezimmer manager;
+  
+  public WartezimmerGUI(String title) { 
+    // Frame-Initialisierung
+    super(title);
+    setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+    int frameWidth = 300; 
+    int frameHeight = 300;
+    setSize(frameWidth, frameHeight);
+    Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+    int x = (d.width - getSize().width) / 2;
+    int y = (d.height - getSize().height) / 2;
+    setLocation(x, y);
+    setResizable(false);
+    Container cp = getContentPane();
+    cp.setLayout(null);
+    // Anfang Komponenten
+    
+    jLabel1.setBounds(32, 8, 133, 20);
+    jLabel1.setText("Wartezimmermanager");
+    cp.add(jLabel1);
+    jLName.setBounds(8, 32, 70, 20);
+    jLName.setText("Name:");
+    cp.add(jLName);
+    jLKasse.setBounds(8, 64, 70, 20);
+    jLKasse.setText("Kasse");
+    cp.add(jLKasse);
+    jTFName.setBounds(96, 32, 150, 20);
+    cp.add(jTFName);
+    jTFKasse.setBounds(96, 64, 150, 20);
+    cp.add(jTFKasse);
+    jBAnmelden.setBounds(96, 104, 75, 25);
+    jBAnmelden.setText("anmelden");
+    jBAnmelden.setMargin(new Insets(2, 2, 2, 2));
+    jBAnmelden.addActionListener(new ActionListener() { 
+      public void actionPerformed(ActionEvent evt) { 
+        jBAnmelden_ActionPerformed(evt);
+      }
+    });
+    cp.add(jBAnmelden);
+    jLNaechste.setBounds(8, 152, 110, 20);
+    jLNaechste.setText("Der Naechste bitte");
+    cp.add(jLNaechste);
+    jLNameNaechster.setBounds(120, 152, 158, 20);
+    jLNameNaechster.setText("---");
+    cp.add(jLNameNaechster);
+    jBabmelden.setBounds(88, 216, 83, 25);
+    jBabmelden.setText("abmelden");
+    jBabmelden.setMargin(new Insets(2, 2, 2, 2));
+    jBabmelden.addActionListener(new ActionListener() { 
+      public void actionPerformed(ActionEvent evt) { 
+        jBabmelden_ActionPerformed(evt);
+      }
+    });
+    cp.add(jBabmelden);
+    // Ende Komponenten
+    
+    setVisible(true);
+    manager = new Wartezimmer();
+  } // end of public WartezimmerGUI
+  
+  // Anfang Methoden
+  public void jBAnmelden_ActionPerformed(ActionEvent evt) {
+    String name = jTFName.getText();
+    String kasse =jTFKasse.getText();
+    manager.ergaenzePatient(new Patient(name, kasse));
+    Patient pat = manager.ersterPatient();
+    jLNameNaechster.setText(pat.gibName());
+  } // end of jBAnmelden_ActionPerformed
+  
+  public void jBabmelden_ActionPerformed(ActionEvent evt) {
+    manager.entfernePatient();
+    if (manager.istLeer()) {
+      jLNameNaechster.setText("----");
+    } else {
+    Patient pat = manager.ersterPatient();
+    jLNameNaechster.setText(pat.gibName());
+  }
+  } // end of jBabmelden_ActionPerformed
+  
+  // Ende Methoden
+  
+  public static void main(String[] args) {
+    new WartezimmerGUI("WartezimmerGUI");
+  } // end of main
+  
+} // end of class WartezimmerGUI

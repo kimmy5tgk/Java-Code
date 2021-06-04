@@ -1,0 +1,56 @@
+public class Handdechiffrierer {
+  private String chiffre, neuerText;
+  private Stack<ErsetzungsOperation> undoStapel;
+
+  public Handdechiffrierer() {
+    chiffre = "";       
+    undoStapel = new Stack<ErsetzungsOperation>();
+  }
+
+  public void setzeChiffre(String pText) {
+    chiffre = pText;
+    neuerText = chiffre;
+  } 
+
+  public String gibChiffre() {
+    return chiffre;
+  }
+
+  public String gibDecodiertenText() {
+    return neuerText;
+  }
+
+  public void ersetze(String pAlt, String pNeu) {
+    neuerText = neuerText.replace(pAlt,pNeu);      
+    ErsetzungsOperation undo = new ErsetzungsOperation(pAlt.charAt(0), pNeu.charAt(0));
+    undoStapel.push(undo);
+  }
+
+  public void rueckgaengig() {  
+    if (!undoStapel.isEmpty()) {
+      ErsetzungsOperation undo = undoStapel.top();
+      String alt = "" + undo.gibOriginalZeichen();
+      String neu = "" + undo.gibErsetztDurchZeichen();
+      neuerText = neuerText.replace(neu, alt);            
+      undoStapel.pop();
+    }     
+  }  
+
+  public String gibBspText()  {
+    return "XG FCIIX XEL JCLL XELXL XGXT, MXB GNFHL TCLRX UCFBX MEX GCXNZX KLOXBMBHGGXL YKB"+
+    "JKXFTX RXIBCRXL FCIIX, MXGGXL ZBCXQIX CDXB LKL YK XLMX RELRXL, GH MCGG XB YKB CBDXEI " +
+    "EJJXB KLICKRTENFXB PCBM. MC MCNFIX MXB FXBB MCBCL, EFL CKG MXJ QKIIXB YK GNFCQQXL, CDXB "+
+    "MXB XGXT JXBZIX, MCGG ZXEL RKIXB PELM PXFIX, TEXQ QHBI KLM JCNFIX GENF CKQ MXL PXR LCNF "+
+    "DBXJXL; MHBI, JXELIX XB, ZHXLLIX XB UC GICMIJKGEZCLI PXBMXL. CTG XB XEL PXETNFXL "+
+    "QHBIRXRCLRXL PCB, QCLM XB XELXL UCRMFKLM CKQ MXJ PXRX TEXRXL, MXB UCSSIX PEX XELXB, "+
+    "MXB GENF JKXMX RXTCKQXL FCI. LKL, PCG UCSSGI MK GH, SCNZCL? QBCRIX MXB XGXT. "+
+    "CNF, GCRIX MXB FKLM, PXET ENF CTI DEL KLM UXMXL ICR GNFPCXNFXB PXBMX, CKNF CKQ MXB "+
+    "UCRM LENFI JXFB QHBI ZCLL, FCI JENF JXEL FXBB PHTTXL IHIGNFTCRXL, MC FCD ENF BXEGGCKG "+
+    "RXLHJJXL; CDXB PHJEI GHTT ENF LKL JXEL DBHI OXBMEXLXL? - PXEGGI MK PCG? GSBCNF MXB XGXT, "+
+    "ENF RXFX LCNF DBXJXL KLM PXBMX MHBI GICMIJKGEZCLI, RXF JEI KLM TCGG MENF CKNF DXE "+
+    "MXB JKGEZ CLLXFJXL. ENF GSEXTX MEX TCKIX KLM MK GNFTCXRGI MEX SCKZXL. MXB FKLM PCB'G "+
+    "YKQBEXMXL, KLM GEX RELRXL PXEIXB. XG MCKXBIX LENFI TCLRX, GH GCGG MC XELX ZCIYX CL MXJ "+
+    "PXR KLM JCNFI XEL RXGENFI PEX MBXE ICRX BXRXLPXIIXB.";
+  }
+
+}

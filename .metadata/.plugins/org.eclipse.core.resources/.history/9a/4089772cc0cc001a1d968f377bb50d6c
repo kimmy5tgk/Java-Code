@@ -1,0 +1,136 @@
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.event.*;
+
+/**
+ *
+ * Beschreibung
+ *
+ * @version 1.0 vom 22.05.2013
+ * @author 
+ */
+
+public class Dechiffrierer_GUI extends JFrame {
+  /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+// Anfang Attribute
+  private JLabel jLabel1 = new JLabel();
+  private JTextArea jTA_Chiffre = new JTextArea("");
+  private JScrollPane jTA_ChiffreScrollPane = new JScrollPane(jTA_Chiffre);
+  private JLabel jLabel2 = new JLabel();
+  private JTextArea jTA_Versuch = new JTextArea("");
+  private JScrollPane jTA_VersuchScrollPane = new JScrollPane(jTA_Versuch);
+  private JButton jBt_Neu = new JButton();
+  private JTextField jTF_alt = new JTextField();
+  private JLabel jLabel4 = new JLabel();
+  private JTextField jTF_neu = new JTextField();
+  private JButton jBt_ersetze = new JButton();
+  private JButton bRueckgaengig = new JButton();
+  // Ende Attribute
+  private Handdechiffrierer anw;
+
+  public Dechiffrierer_GUI(String title) { 
+    // Frame-Initialisierung
+    super(title);
+    setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+    int frameWidth = 618; 
+    int frameHeight = 396;
+    setSize(frameWidth, frameHeight);
+    Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+    int x = (d.width - getSize().width) / 2;
+    int y = (d.height - getSize().height) / 2;
+    setLocation(x, y);
+    setResizable(false);
+    Container cp = getContentPane();
+    cp.setLayout(null);
+    // Anfang Komponenten
+
+    jLabel1.setBounds(24, 8, 59, 25);
+    jLabel1.setText("Chiffre");
+    cp.add(jLabel1);
+    jTA_ChiffreScrollPane.setBounds(24, 40, 585, 113);
+    jTA_Chiffre.setLineWrap(true);
+    jTA_Chiffre.setFont(new Font("Courier New", Font.BOLD, 12));
+    cp.add(jTA_ChiffreScrollPane);
+    jLabel2.setBounds(24, 160, 133, 25);
+    jLabel2.setText("Dechiffierungsversuch");
+    cp.add(jLabel2);
+    jTA_VersuchScrollPane.setBounds(24, 192, 585, 129);
+    jTA_Versuch.setLineWrap(true);
+    jTA_Versuch.setFont(new Font("Courier New", Font.BOLD, 12));
+    cp.add(jTA_VersuchScrollPane);
+    jBt_Neu.setBounds(96, 8, 409, 25);
+    jBt_Neu.setText("Beispiel laden  oder Chiffre bearbeiten");
+    jBt_Neu.setMargin(new Insets(2, 2, 2, 2));
+    jBt_Neu.addActionListener(new ActionListener() { 
+        public void actionPerformed(ActionEvent evt) { 
+          jBt_Neu_ActionPerformed(evt);
+        }
+      });
+    cp.add(jBt_Neu);
+    jTF_alt.setBounds(24, 328, 25, 25);
+    cp.add(jTF_alt);
+    jLabel4.setBounds(64, 328, 27, 25);
+    jLabel4.setText(">>>");
+    cp.add(jLabel4);
+    jTF_neu.setBounds(104, 328, 25, 25);
+    cp.add(jTF_neu);
+    jBt_ersetze.setBounds(152, 328, 203, 25);
+    jBt_ersetze.setText("ersetze");
+    jBt_ersetze.setMargin(new Insets(2, 2, 2, 2));
+    jBt_ersetze.addActionListener(new ActionListener() { 
+        public void actionPerformed(ActionEvent evt) { 
+          jBt_ersetze_ActionPerformed(evt);
+        }
+      });
+    cp.add(jBt_ersetze);
+    bRueckgaengig.setBounds(368, 328, 235, 25);
+    bRueckgaengig.setText("<= Rueckgaengig machen");
+    bRueckgaengig.setMargin(new Insets(2, 2, 2, 2));
+    bRueckgaengig.addActionListener(new ActionListener() { 
+        public void actionPerformed(ActionEvent evt) { 
+          bRueckgaengig_ActionPerformed(evt);
+        }
+      });
+    cp.add(bRueckgaengig);
+    // Ende Komponenten
+
+    setVisible(true);
+  } // end of public Decodierer_GUI
+
+  // Anfang Methoden
+  public void jBt_Neu_ActionPerformed(ActionEvent evt) {
+    anw = new Handdechiffrierer();
+    String eingabe = jTA_Chiffre.getText();
+    if (eingabe.length() < 3) {
+      eingabe = anw.gibBspText();
+      jTA_Chiffre.setText(eingabe);
+    }
+    anw.setzeChiffre(eingabe);
+    jTA_Versuch.setText(anw.gibChiffre());
+
+  } // end of jBt_Neu_ActionPerformed
+
+  public void jBt_ersetze_ActionPerformed(ActionEvent evt) {
+    String alt = jTF_alt.getText();
+    String neu = jTF_neu.getText();
+    neu = neu.toLowerCase();
+    anw.ersetze(alt,neu);
+    jTA_Versuch.setText(anw.gibDecodiertenText());
+  } // end of jBt_ersetze_ActionPerformed
+
+  public void bRueckgaengig_ActionPerformed(ActionEvent evt) {
+    anw.rueckgaengig();
+    jTA_Versuch.setText(anw.gibDecodiertenText());
+  } // end of bRueckgaengig_ActionPerformed
+
+  // Ende Methoden
+
+  public static void main(String[] args) {
+    new Dechiffrierer_GUI("Dechiffrierer_GUI");
+  } // end of main
+
+} // end of class Decodierer_GUI
